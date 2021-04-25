@@ -1,0 +1,71 @@
+v4
+ == commands can be abbreviated to one letter, followed by \n
+ == td takes 2sec == in watch mode, continuously executes td until endwatch
+ == all responses end with ok\n or err[0-9]\n
+ok                          =>  ok
+watch                       =>  on|off ok
+moving                      =>  -0.11|0.11|0 ok
+td                          =>  <temp> <depth> ok
+halt                        =>  ok
+file <name> <size>          =>  ok|err# 
+  <data=sizeB>              =>  ok|err#
+gps                         =>  <lat> <long> <time> <date> ok
+level                       =>  <0-5> ok
+iridium                     =>  <phone#> .. good|err#
+                                file <name> <size> .... good|err#
+                                [ file <name> <size> .... good|err# ]
+                                [ config <string> ]
+                                ok
+config                      =>  <string>
+                                [ <string> ]
+                                ok
+stats                       =>  files <filesSent>
+                                bytes <bytesSent>
+                                error <errorFail>
+                                avail <bytesFree>
+                                ok
+pico <dos command>          =>  <command response>
+                                ok
+
+<-- async alerts, not in direct response to query
+done                        :=  done with surface, due to time or data done
+
+v3
+Serial interface program to connect sbe39, control Iridium/GPS.
+Buoy is connected to com4 at 9600 BAUD
+ ^A Antenna G|I 
+ ^B Break
+ ^C Connect (powerup) I|S 
+ ^D powerDown I|S
+ ^E exit to pico
+ ^F status
+ ^G unused 
+ ^H help
+On console (com1): s=status x=exit *=this message
+status: 
+"antenna:G iridgps:off sbe:on command:1"
+
+
+v2
+Serial interface program to control and 
+ communicate with SBE and Iridium/GPS.
+Buoy is connected to com4 at 9600 BAUD
+ ^A Antenna G|I 
+ ^B Binary byte 
+ ^C Connect I|S 
+ ^D powerDown I|S
+ ^E binary lEngth
+ ^F binary 2bytes (TBD)
+ ^G unused 
+On console (com1): s=status x=exit *=this message
+status: 
+"connected:SBE antenna:G iridgps:off sbe:on command:1"
+
+
+v1.0
+ * SwitchAntenna
+ * Switch antenna module between SBE39 TD, Iridium and GPS.
+ * send ^b to connect SB39.Type 'ts' to get the T-D from SB39plus.
+ * send ^f to connect GPS. Antenna SW is GPS side.
+ * send ^d to connect Iridium/GPS. Antenna to IRID side.
+ * send ^e to exit.
