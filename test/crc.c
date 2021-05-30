@@ -34,7 +34,7 @@ int main() {
   buff=malloc(64);
   // platform
   len = 8;
-  sprintf(buff, "???cs%4s%4s", "LR01", "QUEH");
+  sprintf(buff, "???CS%4s%4s", "LR01", "QUEH");
   cs = iriCRC(buff+5, len);
   buff[3] = (char) (cs >> 8) & 0xFF;
   buff[4] = (char) (cs & 0xFF);
@@ -44,7 +44,9 @@ int main() {
   fclose(fd);
   // message
   len = 10;
-  sprintf(buff, "@@@cs%c%cT%c%c%5s", 0, len, 1, 1, "Hello");
+  sprintf(buff, "@@@CS%c%cT%c%c%5s", 
+      (char) (len>>8 & 0xFF), (char) (len & 0xFF),
+      1, 1, "Hello");
   cs = iriCRC(buff+5, len);
   buff[3] = (char) (cs >> 8) & 0xFF;
   buff[4] = (char) (cs & 0xFF);
