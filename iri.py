@@ -1,45 +1,49 @@
-  // set projHdr to 13 char project header, 0 in byte 14
-  // poke in checksum high and low bytes
-  sprintf(irid.projHdr, "???cs%4s%4s", iri.project, iri.platform);
-  cs = iriCRC(irid.projHdr+5, 8);
-  irid.projHdr[3] = (char) (cs >> 8) & 0xFF;
-  irid.projHdr[4] = (char) (cs & 0xFF);
+#!/usr/bin/python3
+# v2 Tue 02 Feb 2021 09:53:51 AM UTC
+import time
+import sys
+import serial
+from Gps import Gps
+from importlib import reload
 
-int iriCRC(uchar *buf, int cnt) {
-  long accum=0x00000000;
-  int i, j;
-  static char *self="iriCRC";
-  DBG();
-  if (cnt <= 0) return 0;
-  while (cnt--) {
-    accum |= *buf++ & 0xFF;
-    for (i = 0; i < 8; i++) {
-      accum <<= 1;
-      if (accum & 0x01000000)
-        accum ^= 0x00102100;
-    }
-  }
-  // compatibility with XMODEM CRC
-  for (j = 0; j < 2; j++) {
-    accum |= 0 & 0xFF;
-    for (i = 0; i < 8; i++) {
-      accum <<= 1;
-      if (accum & 0x01000000)
-        accum ^= 0x00102100;
-    }
-  }
-  return (accum >> 8);
-} // iriCRC
+# settings
+interval = 'minute'   # minute hour or day
 
-///
-// call home
-// uses: all.str
-// rets: 0=success
-int iriDial(void) {
-  char str[32];
-  int i;
-  static char *self="iriDial";
-  DBG();
+# which serial? first one
+from serial.tools.list_ports import comports
+port = comports()[0].device
+ser = serial.Serial(port, 19200, timeout=1)
+gps = Gps(ser)
+
+def crc(barr):
+  """xmodem CRC (bytearray barr)"""
+  accum=0
+  mask=0x7FFFFFFF
+  for b in barr:
+    accum |= b
+    # python int will get huge - strip to 15 bits (a&7F)<<1
+    for i in range(0,8):
+      accum = (accum & mask) << 1
+      if (accum & 0x01000000):
+        accum ^= 0x00102100
+  # xmodem dumb
+  for i in range(0,2):
+    # accum |= 0
+    for i in range(0,8):
+      accum = (accum & mask) << 1
+      if (accum & 0x01000000):
+        accum ^= 0x00102100
+  return  ((accum >> 8) & 0xFFFF)
+
+def call(mesg):
+  """call home and send (byte/array mesg)"""
+  proj = b'LR01'+b'QUEH'
+  cs = crc(proj).to_bytes(2,'big')
+  projHdr = bytearray(b'???'+cs+proj)
+  
+
+'''
+
   flogf(" %s", utlTime());
   utlWrite(irid.port, "at+cpas", EOL);
   if (!utlReadExpect(irid.port, all.str, "OK", 5)) return 2;
@@ -128,4 +132,4 @@ int iriSendBlock(int bsiz, int bnum, int btot) {
   if (irid.log) write(irid.log, irid.block, (long) bsiz);
   return 0;
 } // iriSendBlock
-
+'''
