@@ -5,23 +5,22 @@ import sys
 import serial
 from Gps import Gps
 from importlib import reload
-
+#
 # settings
-interval = 'minute'   # minute hour or day
-
+#
 # which serial? first one
 from serial.tools.list_ports import comports
 port = comports()[0].device
 ser = serial.Serial(port, 19200, timeout=1)
 gps = Gps(ser)
-
+#
 def crc(barr):
   """xmodem CRC (bytearray barr)"""
   accum=0
   mask=0x7FFFFFFF
   for b in barr:
     accum |= b
-    # python int will get huge - strip to 15 bits (a&7F)<<1
+    # python int will get huge - strip high bit 16 (a&7F)<<1
     for i in range(0,8):
       accum = (accum & mask) << 1
       if (accum & 0x01000000):
