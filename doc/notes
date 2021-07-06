@@ -10,3 +10,9 @@ ip addr flush dev eth0
 # note - turns off wireless
 ifup eth0
 .. static ip for iclisten
+
+.2 autostart
+ -- /etc/runonce.d/gps.sh
+#!/bin/bash
+cd /home/debian/code
+python3 ./whereat.py

@@ -7,6 +7,7 @@ class Gps:
   def __init__(self, a3la, log=""):
     self.a3la = a3la
     self.log = log
+    # check log path
   #
   def query(self):
     """ query self.a3la GPS, parse responses into dict:data, return data """
@@ -22,6 +23,9 @@ class Gps:
     data.update( self.keyval('Lati', l) )
     data.update( self.keyval('Long', l) )
     data.update( self.keyval('Used', l) )
+    #if self.log:
+    #  with open(self.log, "a") as outF:
+    #    for k in data.keys():
     return data
   #
   def keyval(self, key, lines, ter='\r'):
