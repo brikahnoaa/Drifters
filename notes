@@ -16,3 +16,6 @@ ifup eth0
 #!/bin/bash
 cd /home/debian/code
 python3 ./whereat.py
+..
+  sudo ln -s /home/debian/code/init.d-gps /etc/init.d/gps
+  sudo for i in 2 3 4 5; do ln -s /etc/init.d/gps /etc/rc$i.d/S50gps; done

@@ -1,0 +1,41 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          gps
+# Default-Start:     S
+# Default-Stop:
+# Short-Description: gps
+# Description:       continuous record of gps
+### END INIT INFO
+
+# . /lib/lsb/init-functions
+# [ -f /etc/default/rcS ] && . /etc/default/rcS
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+PROGRAM=whereat.py
+RUNDIR=/home/debian/code
+
+test -f $RUNDIR/$PROGRAM || exit 0
+
+case "$1" in
+  start)
+	cd $RUNDIR
+	if [ `whoami` == 'root' ]; then
+		su debian -c "python3 $PROGRAM 120 &"
+	else
+		python3 $PROGRAM 120 &
+	fi
+	;;
+  stop)
+	kill `cat $RUNDIR/pid`
+	rm $RUNDIR/pid
+	;;
+  status)
+	ps -ef | grep $PROGRAM
+	exit 0
+	;;
+  *)
+	echo "$PROGRAM [seconds]"
+	exit 1
+esac
+
+exit 0
