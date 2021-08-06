@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # v1 Tue Jun  1 07:53:18 PDT 2021
 # Send message via rudics
+import sys
 import A3la
 ##
 class Rud:
@@ -48,9 +49,9 @@ class Rud:
       a3la.writeln('atd'+'0088160000519')
       a3la.expect('CONNECT', wait=10)
       a3la.write(projHdr)
-      a3la.expect('ACK', wait=15)
+      a3la.expect('ACK', wait=20)
       a3la.write(mesgBlk)
-      a3la.expect('done', wait=15)
+      a3la.expect('done', wait=20)
     except:
       err=sys.exc_info()[1]
       print("Error "+err.args[0])
