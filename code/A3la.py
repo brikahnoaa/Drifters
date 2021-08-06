@@ -44,3 +44,16 @@ class A3la:
       sleep(1)
     raise KeyError("Expected {} in {} secs".format(key, wait))
   ##
+  def expectlines(self, key, wait=5):
+    """ consume response, look for 'key', return all """
+    if isinstance(key, bytes):
+      key = key.decode() # to str
+    # wait seconds for key
+    lines = []
+    for i in range(wait):
+      lines += self.readlines()
+      for l in lines:
+        if key in l: return(lines)
+      sleep(1)
+    raise KeyError("Expected {} in {} secs".format(key, wait))
+  ##

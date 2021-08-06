@@ -11,18 +11,16 @@
 # . /lib/lsb/init-functions
 # [ -f /etc/default/rcS ] && . /etc/default/rcS
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
-PROGRAM=phonehome.py
+PROGRAM="sh gps.sh"
 RUNDIR=/home/debian/code
-
-test -f $RUNDIR/$PROGRAM || exit 0
 
 case "$1" in
   start)
 	cd $RUNDIR
 	if [ `whoami` == 'root' ]; then
-		su debian -c "python3 $PROGRAM 120 &"
+		su debian -c "$PROGRAM"
 	else
-		python3 $PROGRAM 120 &
+		$PROGRAM 
 	fi
 	;;
   stop)
