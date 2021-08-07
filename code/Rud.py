@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-# v1 Tue Jun  1 07:53:18 PDT 2021
 # Send message via rudics
 import sys
 import A3la
+import traceback
 ##
 class Rud:
   ##
@@ -53,7 +53,6 @@ class Rud:
       a3la.write(mesgBlk)
       a3la.expect('done', wait=20)
     except:
-      err=sys.exc_info()[1]
-      print("Error "+err.args[0])
+      traceback.print_exc(limit=1)
       return(False)
     return(True)

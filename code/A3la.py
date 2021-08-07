@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-# v1 Wed 03 Feb 2021 12:39:35 PM UTC
 # class A3la
 import serial
 from time import sleep
 
+class ExpectError(KeyError): pass
 class A3la:
   """A3la (gps&iri) communications"""
   def __init__(self, ser, log=""):
@@ -42,7 +42,7 @@ class A3la:
       for l in lines:
         if key in l: return(True)
       sleep(1)
-    raise KeyError("Expected {} in {} secs".format(key, wait))
+    raise ExpectError
   ##
   def expectlines(self, key, wait=5):
     """ consume response, look for 'key', return all """
@@ -55,5 +55,5 @@ class A3la:
       for l in lines:
         if key in l: return(lines)
       sleep(1)
-    raise KeyError("Expected {} in {} secs".format(key, wait))
+    raise ExpectError
   ##
