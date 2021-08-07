@@ -11,21 +11,26 @@ class Gps:
   def query(self):
     """ query self.a3la GPS, parse responses into dict:data, return data """
     data = {}
-    self.a3la.write('at+pt\r')
-    l = self.a3la.readlines()
-    data.update( self.keyval('Time', l, ter='.') )
-    self.a3la.write('at+pd\r')
-    l = self.a3la.readlines()
-    data.update( self.keyval('Date', l) )
-    self.a3la.write('at+pl\r')
-    l = self.a3la.readlines()
-    data.update( self.keyval('Lati', l) )
-    data.update( self.keyval('Long', l) )
-    data.update( self.keyval('Used', l) )
-    # at+csq    +CSQ:5
-    self.a3la.write('at+csq\r')
-    l = self.a3la.expectlines('CSQ')
-    data.update( self.keyval('+CSQ', l, sep=':') )
+    try:
+      self.a3la.write('at+pt\r')
+      l = self.a3la.readlines()
+      data.update( self.keyval('Time', l, ter='.') )
+      self.a3la.write('at+pd\r')
+      l = self.a3la.readlines()
+      data.update( self.keyval('Date', l) )
+      self.a3la.write('at+pl\r')
+      l = self.a3la.readlines()
+      data.update( self.keyval('Lati', l) )
+      data.update( self.keyval('Long', l) )
+      data.update( self.keyval('Used', l) )
+      # at+csq    +CSQ:5
+      self.a3la.write('at+csq\r')
+      l = self.a3la.expectlines('CSQ')
+      data.update( self.keyval('+CSQ', l, sep=':') )
+    except:
+      import traceback
+      traceback.print_exc(limit=1)
+      return(False)
     return data
   #
   def keyval(self, key, lines, sep='=', ter='\r'):

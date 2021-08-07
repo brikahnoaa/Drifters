@@ -2,7 +2,6 @@
 # Send message via rudics
 import sys
 import A3la
-import traceback
 ##
 class Rud:
   ##
@@ -47,12 +46,13 @@ class Rud:
       a3la.writeln('at+chup')
       a3la.expect('OK')
       a3la.writeln('atd'+'0088160000519')
-      a3la.expect('CONNECT', wait=10)
+      a3la.expect('CONNECT', wait=15)
       a3la.write(projHdr)
       a3la.expect('ACK', wait=20)
       a3la.write(mesgBlk)
       a3la.expect('done', wait=20)
     except:
+      import traceback
       traceback.print_exc(limit=1)
       return(False)
     return(True)
