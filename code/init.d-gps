@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 ### BEGIN INIT INFO
 # Provides:          gps
@@ -11,28 +11,32 @@
 # . /lib/lsb/init-functions
 # [ -f /etc/default/rcS ] && . /etc/default/rcS
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
-PROGRAM="sh gps.sh"
+PROGRAM="/usr/bin/bash gps.sh"
 RUNDIR=/home/debian/code
 
+cd $RUNDIR
 case "$1" in
   start)
-	cd $RUNDIR
 	if [ `whoami` == 'root' ]; then
-		su debian -c "$PROGRAM"
+		su debian -c "$PROGRAM" &
 	else
-		$PROGRAM 
+		$PROGRAM &
 	fi
 	;;
   stop)
-	kill `cat $RUNDIR/pid`
-	rm $RUNDIR/pid
+    if [ -r pid ]; then
+      kill `cat pid`
+      rm pid
+    fi
 	;;
   status)
-	ps -ef | grep $PROGRAM
-	exit 0
+    if [ -r pid ]; then
+      ps -ef | grep $(cat pid) | grep -v grep
+      exit 0
+    fi
 	;;
   *)
-	echo "$PROGRAM [seconds]"
+	echo "usage: $PROGRAM"
 	exit 1
 esac
 

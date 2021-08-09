@@ -1,3 +1,6 @@
 #!/bin/bash
 cd /home/debian/code
-python3 ./phonehome.py > gps.log 2>&1
+Log=gps.log
+date > $Log
+echo $HOSTNAME >> $Log
+python3 ./phonehome.py >> $Log 2>&1

@@ -14,7 +14,7 @@ from importlib import reload
 interval = 120
 
 with open("pid", 'w') as pid:
-  pid.write(str(os.getpid()))
+  pid.write(str(os.getpid())+'\n')
 # which serial? first one
 port = serial.tools.list_ports.comports()[0].device
 buoyname = os.uname().nodename

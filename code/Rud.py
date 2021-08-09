@@ -27,8 +27,10 @@ class Rud:
           accum ^= 0x00102100
     return  ((accum >> 8) & 0xFFFF)
   ##
-  def call(self, mesg):
-    """call home and send (byte/array mesg)"""
+  def call(self, mesg, recurs=0):
+    """call home and send (byte/array mesg)
+    retry on failure(recursive)"""
+    retry=3
     if isinstance(mesg, str):
       mesg = mesg.encode() # to bytes
     a3la = self.a3la
@@ -54,5 +56,9 @@ class Rud:
     except:
       import traceback
       traceback.print_exc(limit=1)
-      return(False)
+      if recurs<retry:
+        # redial
+        print('Call failed, try again [{}]'.format(recurs+1))
+        return(self.call(mesg, recurs=recurs+1))
+      else: return(False)
     return(True)
