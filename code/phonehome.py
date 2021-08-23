@@ -16,13 +16,13 @@ interval = 600
 with open("pid", 'w') as pid:
   pid.write(str(os.getpid())+'\n')
 # which serial? first one
+buoy = os.uname().nodename
 port = serial.tools.list_ports.comports()[0].device
 ser = serial.Serial(port, 19200, timeout=1)
 a3la = A3la.A3la(ser)
 gps = Gps.Gps(a3la)
-rud = Rud.Rud(a3la)
-buoyname = os.uname().nodename
-print(buoyname)
+rud = Rud.Rud(a3la, buoy)
+print(buoy)
 # delete pid file to stop loop
 while(os.path.isfile("pid")):
   data=gps.query()
@@ -31,5 +31,5 @@ while(os.path.isfile("pid")):
     pprint(data,stream=datafile)
   with open("data2",'a') as datafile:
     pprint(data,stream=datafile)
-  rud.call(buoyname+'\r'+pformat(data)+'\r')
+  rud.call(buoy+'\r'+pformat(data)+'\r')
   time.sleep(interval)

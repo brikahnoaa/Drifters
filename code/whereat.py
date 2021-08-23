@@ -14,6 +14,7 @@ with open("pid", 'w') as pid:
   pid.write(str(os.getpid()))
 # settings
 # which serial? first one
+buoy = os.uname().nodename
 port = serial.tools.list_ports.comports()[0].device
 ser = serial.Serial(port, 19200, timeout=1)
 a3la = A3la(ser)

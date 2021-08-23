@@ -5,8 +5,9 @@ import A3la
 ##
 class Rud:
   ##
-  def __init__(self, a3la):
+  def __init__(self, a3la, buoy):
     self.a3la=a3la
+    self.buoy=buoy
   def crc(self, barr):
     """xmodem CRC (bytearray barr)"""
     accum=0
@@ -34,7 +35,9 @@ class Rud:
     if isinstance(mesg, str):
       mesg = mesg.encode() # to bytes
     a3la = self.a3la
-    prj = b'LR01'+b'QUEH'
+    # last char of buoy name should be digit id
+    id = self.buoy[-1].encode()
+    prj = b'LR0'+id+b'QUEH'
     cs = self.crc(prj).to_bytes(2,'big')
     projHdr = bytes(b'???'+cs+prj)
     ln = (len(mesg)+5).to_bytes(2,'big')
@@ -47,7 +50,7 @@ class Rud:
       a3la.expect('OK')
       a3la.writeln('at+chup')
       a3la.expect('OK')
-      a3la.writeln('atd'+'0088160000519')
+      a3la.writeln('atd'+'0088160000519') 
       a3la.expect('CONNECT', wait=15)
       a3la.write(projHdr)
       a3la.expect('ACK', wait=20)
