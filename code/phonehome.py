@@ -12,6 +12,7 @@ from pprint import pprint,pformat
 from importlib import reload
 
 interval = 600
+retry=9
 
 with open("pid", 'w') as pid:
   pid.write(str(os.getpid())+'\n')
@@ -31,5 +32,15 @@ while(os.path.isfile("pid")):
     pprint(data,stream=datafile)
   with open("data2",'a') as datafile:
     pprint(data,stream=datafile)
-  rud.call(buoy+'\r'+pformat(data)+'\r')
+  #retry on failure(recursive)
+  attempt=0
+  success=False
+  while not success:
+    success = rud.call(buoy+'\r'+pformat(data)+'\r')
+    if success: break
+    attempt+=1
+    if attempt>=retry:
+      print('Call failed, giving up')
+      break
+    print('Call failed, try again [{}]'.format(attempt))
   time.sleep(interval)
