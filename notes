@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2021-Jun-25
 .1 using scipy, numpi v3.8
 .2 spectrogram using too much space found a smaller one
@@ -16,3 +17,29 @@ user iclisten
 .2 manual says sftp should be user iclisten no pwd, broken
 sftp -c aes128-cbc -o KexAlgorithms=diffie-hellman-group14-sha1  iclisten@192.168.3.3
 Unable to negotiate with 192.168.3.3 port 22: no matching host key type found. Their offer: ssh-rsa
+=======
+.1 cubase 2 icListen
+.. set the local ethernet
+a='auto eth0
+iface eth0 inet static
+  address 192.168.3.11/24
+'
+echo "$a" > /etc/network/interfaces.d/eth0
+ifdown eth0
+ip addr flush dev eth0
+# note - turns off wireless
+ifup eth0
+.. static ip for iclisten
+
+.2 autostart
+ -- /etc/runonce.d/gps.sh
+#!/bin/bash
+cd /home/debian/code
+python3 ./whereat.py
+..
+  sudo ln -s /home/debian/code/init.d-gps /etc/init.d/gps
+  sudo for i in 2 3 4 5; do ln -s /etc/init.d/gps /etc/rc$i.d/S50gps; done
+
+a3la at+gpssta disable gps
+
+>>>>>>> da2585a10086bdae6bdd4ceb2f1eb6a02b3a077d

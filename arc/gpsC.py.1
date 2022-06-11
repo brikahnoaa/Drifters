@@ -1,0 +1,44 @@
+#!/usr/bin/python3
+# v1 Wed 03 Feb 2021 12:39:35 PM UTC
+# class Gps
+import serial
+
+class Gps:
+  """GPS readings parsed into dict"""
+  def __init__(self, ser, log=""):
+    self.ser=ser
+    self.log=log
+  ##
+  def lookFor(self, key, line, ter='\r'):
+    """look for key in line, pair with string from '=' to ter.minator"""
+    # if line is bytes, then decode to string
+    if isinstance(line, bytes):
+      line = line.decode()
+    if key in line:
+      at1=line.find('=') + 1 # 0 if not found
+      at2=line.find(ter, at1) # -1 if not found
+      return {key:line[at1:at2]}
+    else:
+      return {}
+  ##
+  def getGPS(self):
+    """ parse GPS responses into dict """
+    gps = {}
+    self.ser.write(b'at+pt\r')
+    for l in self.ser.readlines():
+      # gps.update( self.lookFor('Time', l, ter='.') )
+      gps.update( self.lookFor('Time', l) )
+    self.ser.write(b'at+pd\r')
+    for l in self.ser.readlines():
+      gps.update( self.lookFor('Date', l) )
+    self.ser.write(b'at+pl\r')
+    for l in self.ser.readlines():
+      gps.update( self.lookFor('Lati', l) )
+      gps.update( self.lookFor('Long', l) )
+      gps.update( self.lookFor('Used', l) )
+    #if self.log:
+    #  with open(self.log, "a") as outF:
+    #    o = f"{gps['Time']}, Lati:{gps['Lati']}, Long:{gps['Long']}\n"
+    #    outF.write(o)
+    return gps
+

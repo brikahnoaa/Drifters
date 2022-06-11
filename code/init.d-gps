@@ -1,0 +1,43 @@
+#!/usr/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          gps
+# Default-Start:     S
+# Default-Stop:
+# Short-Description: gps
+# Description:       continuous record of gps
+### END INIT INFO
+
+# . /lib/lsb/init-functions
+# [ -f /etc/default/rcS ] && . /etc/default/rcS
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+PROGRAM="/usr/bin/bash gps.sh"
+RUNDIR=/home/debian/code
+
+cd $RUNDIR
+case "$1" in
+  start)
+	if [ `whoami` == 'root' ]; then
+		su debian -c "$PROGRAM" &
+	else
+		$PROGRAM &
+	fi
+	;;
+  stop)
+    if [ -r pid ]; then
+      kill `cat pid`
+      rm pid
+    fi
+	;;
+  status)
+    if [ -r pid ]; then
+      ps -ef | grep $(cat pid) | grep -v grep
+      exit 0
+    fi
+	;;
+  *)
+	echo "usage: $PROGRAM"
+	exit 1
+esac
+
+exit 0
