@@ -1,0 +1,18 @@
+2021-Jun-25
+.1 using scipy, numpi v3.8
+.2 spectrogram using too much space found a smaller one
+.. increased from 10s in 10s to 30s in 30s
+.. using athena data? and lower resolutin
+.. up to 100s data in 15s run, or 100s in 45s
+.. polynomial time, better for short windows
+.3 size of file 100s 2000Hz 112MB/8hrs
+.4 details of file format
+.5 dict[group, stats] stats(mean, start, end; max, min freq)
+
+2022-06-05
+.1 ftp
+load lftp ncftp in cygwin
+user iclisten
+.2 manual says sftp should be user iclisten no pwd, broken
+sftp -c aes128-cbc -o KexAlgorithms=diffie-hellman-group14-sha1  iclisten@192.168.3.3
+Unable to negotiate with 192.168.3.3 port 22: no matching host key type found. Their offer: ssh-rsa
