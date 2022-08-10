@@ -4,6 +4,7 @@ code/pid
 
 #general
 *.log
+Data/
 
 #vim
 *.swp

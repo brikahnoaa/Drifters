@@ -1,0 +1,28 @@
+NOTE - [apply] after any changes
+.0 ops::time
+[sync time]
+.1 data::retrieve
+[delete all]
+.2 settings::specialfeatures
+syncpps=falling
+synctime=yes
+wakeup=yes
+.3 settings::data
+enableDelay=no
+enableAdv=no
+:wave:
+maxFreq=6400 Hz
+mode=logOn
+length=1,2,3
+duty=0,0
+:fft:
+maxF=12.8k Hz
+mode=logOn
+length=1,2,3
+mode=mean
+rate=1/4
+. sleep
+.. verify data at data::retreive
+.. ops::standby
+disconnect power
+[standby]

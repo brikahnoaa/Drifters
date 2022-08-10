@@ -1,0 +1,51 @@
+2022-08-03
+. create base
+  sudo dd if=*-bullseye-20220712-cli-sdhc.img of=/dev/sdd bs=4k conv=sync
+  sudo dd if=spl-imx6-sdhc.bin of=/dev/sdd bs=1k seek=1 conv=sync
+  sudo dd if=u-boot-imx6-sdhc.img of=/dev/sdd bs=1k seek=69 conv=sync
+. basic
+# on buoy
+  sudo vi /etc/hosts
+127.0.0.1 buoy0
+  sudo vi /etc/hostname
+buoy0
+  sudo hostname buoy0
+  sudo apt install dialog
+  sudo dpkg-reconfigure locales
+'e' and choose the en_*
+  sudo apt install apt-utils dnsutils network-manager 
+  sudo apt install less vim cron anacron man-db
+  echo "export PATH=$PATH:/home/debian/.local/bin" >> .bashrc
+. install
+  sudo apt install gfortran cmake pkg-config patchelf
+  sudo apt install python3 python3-pip python3-serial 
+  sudo apt install libopenblas-* libblas3 liblapack3 
+  sudo apt install libatlas-base-dev liblapack-dev libblas-dev
+# no sudo - installs in /home/debian
+  pip install --upgrade pip
+  pip install --upgrade setuptools wheel
+
+  pip install serial
+  pip install numpy 
+  pip install ninja
+  pip install scipy
+  
+. wifi
+nmcli dev status
+nmcli radio wifi
+nmcli dev wifi list
+
+sudo nmcli dev wifi connect network-ssid password "network-password"
+nmcli con down ssid/uuid
+nmtui?
+.. auto
+nmcli connection modify IFNAME connection.autoconnect yes
+ls /etc/NetworkManager/system-connections/
+ autoconnect=true 
+ autoconnect-priority
+
+sudo nmcli dev status
+nmcli dev wifi list
+sudo nmcli dev wifi connect lab password face0ff123
+nmcli -f name,autoconnect connection
+

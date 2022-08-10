@@ -1,3 +1,8 @@
+.1 connection manager
+.. nmcli
+.. /etc/NetworkManager/NetworkManager.conf
+managed=false -> managed=true
+ # systemctl restart network-manager
 .1 cubase 2 icListen
 .. set the local ethernet
 a='auto eth0
@@ -22,3 +27,6 @@ python3 ./whereat.py
 
 a3la at+gpssta disable gps
 
+2022-07-18
+.1 testing fft - 12800fft = 10% * 6400wave
+.2 
