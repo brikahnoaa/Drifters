@@ -1,0 +1,41 @@
+. key name change in v3.9
+debian@buoy0:~/whale$ diff wh*
+43c43
+<     freq, t, spec = sp(audio_data, fs=audio_frequency, window='hann', nperseg=8000, noverlap=7920)
+---
+>     freq, t, spec = sp(audio_data, fs=audio_frequency, window='hanning', nperseg=8000, noverlap=7920)
+
+. using 3 threads takes 30% longer
+debian@buoy0:~/whale$ time python3 main.py ../SCW2067_20210826_161200.wav  &
+[1] 2114
+debian@buoy0:~/whale$ time python3 main.py ../SCW2067_20210826_161200.wav  &
+[2] 2119
+debian@buoy0:~/whale$ time python3 main.py ../SCW2067_20210826_161200.wav  &
+[3] 2121
+debian@buoy0:~/whale$ False
+
+real	0m40.219s
+user	0m32.964s
+sys	0m7.849s
+False
+
+real	0m40.791s
+user	0m33.487s
+sys	0m7.482s
+False
+
+real	0m40.543s
+user	0m33.441s
+sys	0m7.355s
+
+[1]   Done                    time python3 main.py ../SCW2067_20210826_161200.wav
+[2]-  Done                    time python3 main.py ../SCW2067_20210826_161200.wav
+[3]+  Done                    time python3 main.py ../SCW2067_20210826_161200.wav
+debian@buoy0:~/whale$ time python3 main.py ../SCW2067_20210826_161200.wav  &
+[1] 2134
+debian@buoy0:~/whale$ False
+
+real	0m28.771s
+user	0m23.923s
+sys	0m5.597s
+

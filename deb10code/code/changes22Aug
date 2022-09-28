@@ -1,0 +1,9 @@
+2022-08-10
+. /etc/hostname
+buoy1
+. /etc/hosts
+buoy0 buoy1 buoy2
+. /etc/group
+dialout: debian
+. /home/debian/code/gps.sh
+phonehome.py >> $Log

@@ -1,0 +1,6 @@
+2022-09-15
+
+.1 phonehome makes one call
+.. sends GPS + /home/debian/whale/message (remove msg)
+.2 gps.sh runs phonehome and sleeps 10 min until pid removed
+

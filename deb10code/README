@@ -1,0 +1,25 @@
+. wifi
+nmcli dev status
+nmcli radio wifi
+nmcli dev wifi list
+
+sudo nmcli dev wifi connect network-ssid password "network-password"
+nmcli con down ssid/uuid
+nmtui?
+.. auto
+nmcli connection modify IFNAME connection.autoconnect yes
+ls /etc/NetworkManager/system-connections/
+ autoconnect=true
+ autoconnect-priority
+
+sudo nmcli dev status
+nmcli dev wifi list
+sudo nmcli dev wifi connect lab password face0ff123
+nmcli -f name,autoconnect connection
+
+sudo nmcli dev set eth0 managed yes
+sudo nmtui
+sudo systemctl restart NetworkManager.service
+
+. ftp
+ftplib built in
