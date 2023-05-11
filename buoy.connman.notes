@@ -1,0 +1,46 @@
+debian@buoy0:/var/lib/connman$ ls
+ethernet_d063b4024039_cable
+settings
+wifi_80d21d91b339_4f53555f416363657373_managed_none
+wifi_80d21d91b339_6c6162_managed_psk
+wifi_80d21d91b3db_6c6162_managed_psk
+wifi_90e2022d71f3_6461726b206b6e69676874_managed_psk
+wifi_90e2022d71f3_6c6162_managed_psk
+
+connmanctl> services
+*AR lab                  wifi_80d21d91b339_6c6162_managed_psk
+connmanctl> scan wifi
+Scan completed for wifi
+connmanctl> services
+*AR lab                  wifi_80d21d91b339_6c6162_managed_psk
+*A  OSU_Access           wifi_80d21d91b339_4f53555f416363657373_managed_none
+    OSU_Secure           wifi_80d21d91b339_4f53555f536563757265_managed_ieee8021x
+    Visitor              wifi_80d21d91b339_56697369746f72_managed_none
+    eduroam              wifi_80d21d91b339_656475726f616d_managed_ieee8021x
+connmanctl> services wifi_80d21d91b339_6c6162_managed_psk
+/net/connman/service/wifi_80d21d91b339_6c6162_managed_psk
+  Type = wifi
+  Security = [ psk ]
+  State = ready
+  Strength = 70
+  Favorite = True
+  Immutable = False
+  AutoConnect = True
+  Name = lab
+  Ethernet = [ Method=auto, Interface=wlan0, Address=80:D2:1D:91:B3:39, MTU=1500 ]
+  IPv4 = [ Method=dhcp, Address=192.168.4.120, Netmask=255.255.255.0, Gateway=192.168.4.1 ]
+  IPv4.Configuration = [ Method=dhcp ]
+  IPv6 = [  ]
+  IPv6.Configuration = [ Method=auto, Privacy=disabled ]
+  Nameservers = [ 192.168.4.1 ]
+  Nameservers.Configuration = [  ]
+  Timeservers = [ 192.168.4.1 ]
+  Timeservers.Configuration = [  ]
+  Domains = [  ]
+  Domains.Configuration = [  ]
+  Proxy = [ Method=direct ]
+  Proxy.Configuration = [  ]
+  mDNS = False
+  mDNS.Configuration = False
+  Provider = [  ]
+
